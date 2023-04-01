@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DOM Elements Example</title>
+</head>
+<body>
+	<header>
+		<h1>Header</h1>
+	</header>
+	<main>
+		<form id="myForm">
+			<label for="name">Name:</label>
+			<input type="text" id="name" name="name">
+			<br><br>
+			<label for="gender">Gender:</label>
+			<input type="text" id="gender" name="gender">
+			<br><br>
+			<button type="submit">Submit</button>
+		</form>
+		<div id="display"></div>
+		<label>
+			<input type="radio" name="filter" value="male">
+			Male
+		</label>
+		<label>
+			<input type="radio" name="filter" value="female">
+			Female
+		</label>
+	</main>
+	<footer>
+		<p>Footer</p>
+	</footer>
+
+	<script>
+		const form = document.querySelector('#myForm');
+		const display = document.querySelector('#display');
+		const filterMale = document.querySelector('input[value="male"]');
+		const filterFemale = document.querySelector('input[value="female"]');
+
+		form.addEventListener('submit', e => {
+			e.preventDefault();
+
+			// Get form values
+			const name = form.elements.name.value;
+			const gender = form.elements.gender.value;
+
+			// Create a new element to display the submitted data
+			const newElement = document.createElement('div');
+			newElement.textContent = `Name: ${name}, Gender: ${gender} `;
+			const deleteButton = document.createElement('button');
+			deleteButton.textContent = 'Delete';
+			newElement.appendChild(deleteButton);
+
+			// Append the new element to the display section
+			display.appendChild(newElement);
+
+			// Add a click event listener to the delete button
+			deleteButton.addEventListener('click', () => {
+				newElement.remove();
+			});
+
+			// Add a change event listener to the radio buttons for filtering
+			filterMale.addEventListener('change', () => {
+				filterElements('male');
+			});
+
+			filterFemale.addEventListener('change', () => {
+				filterElements('female');
+			});
+
+			// Reset form values
+			form.reset();
+		});
+
+		// Filter elements based on gender value
+		function filterElements(gender) {
+			const elements = display.querySelectorAll('div');
+			elements.forEach(element => {
+				if (element.textContent.includes(`Gender: ${gender}`)) {
+					element.style.display = 'block';
+				} else {
+					element.style.display = 'none';
+				}
+			});
+		}
+	</script>
+</body>
+</html>
